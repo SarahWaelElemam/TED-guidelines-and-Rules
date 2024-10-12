@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TED Guidelines Reimagined</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle, rgba(230, 43, 30, 0.1) 1.5px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 3em;
+            margin-bottom: 50px;
+            color: #e62b1e;
+        }
+        .rule {
+            margin-bottom: 100px;
+            position: relative;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        .rule-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .rule-number {
+            font-size: 5em;
+            position: absolute;
+            top: -40px;
+            left: -20px;
+            color: #e62b1e;
+            opacity: 0.2;
+            font-weight: bold;
+        }
+        .rule-title {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #e62b1e;
+        }
+        .interactive-element {
+            margin-top: 20px;
+            text-align: center;
+        }
+        #timer {
+            font-size: 2em;
+            color: #e62b1e;
+            margin-bottom: 10px;
+        }
+        #plagiarism-checker {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #e62b1e;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            cursor: pointer;
+            border-radius: 30px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            margin: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        button:hover {
+            background-color: #c62218;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        #production-quality {
+            width: 100%;
+            height: 20px;
+            background-color: #ddd;
+            margin-top: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        #production-bar {
+            width: 0%;
+            height: 100%;
+            background-color: #e62b1e;
+            transition: width 0.5s ease-in-out;
+        }
+        #production-message {
+            color: green;
+            font-weight: bold;
+            margin-top: 10px;
+            display: none;
+        }
+        #diversity-wheel {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 0 auto;
+            background: conic-gradient(
+                #e62b1e 0deg 60deg,
+                #f39c12 60deg 120deg,
+                #3498db 120deg 180deg,
+                #2ecc71 180deg 240deg,
+                #9b59b6 240deg 300deg,
+                #1abc9c 300deg 360deg
+            );
+            transition: transform 0.5s ease-in-out;
+        }
+        #fact-check {
+            font-size: 1.2em;
+            color: #e62b1e;
+        }
+        #map-container {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            margin: 0 auto;
+            background-color: #3498db;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .pin {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #e62b1e;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        #sponsors {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .sponsor {
+            width: 80px;
+            height: 80px;
+            background-color: #ddd;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: #777;
+        }
+        #content-shield {
+            width: 100px;
+            height: 100px;
+            background-color: #e62b1e;
+            margin: 0 auto;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TED Guidelines & Rules</h1>
+        
+        <div class="rule" id="rule1">
+            <div class="rule-number">1</div>
+            <div class="rule-content">
+                <div class="rule-title">Time Limit and Content Purity</div>
+                <p>Talks must be under 18 minutes and free from promoting products, services, political agendas, or religious beliefs.</p>
+                <div class="interactive-element">
+                    <div id="timer">18:00</div>
+                    <button onclick="startTimer()">Start Timer</button>
+                    <button onclick="pauseTimer()">Pause Timer</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="rule" id="rule2">
+            <div class="rule-number">2</div>
+            <div class="rule-content">
+                <div class="rule-title">Originality and Honesty</div>
+                <p>Speakers must present original, honest content, with no plagiarism or sponsorship influence.</p>
+                <div class="interactive-element">
+                    <textarea id="plagiarism-checker" placeholder="Paste your content here to check for originality..."></textarea>
+                    <button onclick="checkPlagiarism()">Check Originality</button>
+                    <p id="plagiarism-result"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="rule" id="rule3">
+            <div class="rule-number">3</div>
+            <div class="rule-content">
+                <div class="rule-title">Production Quality and Community Effort</div>
+                <p>TEDx events require professional production quality and should be managed by volunteers committed to community-driven efforts.</p>
+                <div class="interactive-element">
+                    <div id="production-quality">
+                        <div id="production-bar"></div>
+                    </div>
+                    <button onclick="improveQuality()">Improve Production Quality</button>
+                    <p id="production-message"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="rule" id="rule4">
+            <div class="rule-number">4</div>
+            <div class="rule-content">
+                <div class="rule-title">Diversity and Inclusivity</div>
+                <p>Diversity, inclusivity, and respect are core values for both the speakers and the audience, ensuring a wide range of ideas and backgrounds.</p>
+                <div class="interactive-element">
+                    <div id="diversity-wheel"></div>
+                    <button onclick="spinWheel()">Celebrate Diversity</button>
+                    <p id="diversity-idea"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="rule" id="rule5">
+            <div class="rule-number">5</div>
+            <div class="rule-content">
+                <div class="rule-title">Curation and Fact-Checking</div>
+                <p>Talks should go through a strict curation process to ensure they align with TEDx standards, including fact-checking for accuracy.</p>
+                <div class="interactive-element">
+                    <p id="fact-check">Fact-checking in progress...</p>
+                    <button onclick="factCheck()">Verify Facts</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="rule" id="rule6">
+            <div class="rule-number">6</div>
+            <div class="rule-content">
+                <div class="rule-title">Global Reach, Local Focus</div>
+                <p>While TEDx is global, TEDx events must focus on ideas relevant to the local community.</p>
+                <div class="interactive-element">
+                    <div id="map-container">
+                        <div class="pin" style="top: 50px; left: 100px;" onclick="showLocalIdea('New York')"></div>
+                        <div class="pin" style="top: 100px; left: 200px;" onclick="showLocalIdea('Tokyo')"></div>
+                        <div class="pin" style="top: 150px; left: 50px;" onclick="showLocalIdea('Nairobi')"></div>
+                    </div>
+                    <p id="local-idea"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="rule" id="rule7">
+            <div class="rule-number">7</div>
+            <div class="rule-content">
+                <div class="rule-title">Sponsorship Without Influence</div>
+                <p>Sponsors can support the event financially but cannot influence the content or speaker selection.</p>
+                <div class="interactive-element">
+                    <div id="sponsors">
+                        <div class="sponsor">S1</div>
+                        <div id="content-shield">TED</div>
+                        <div class="sponsor">S2</div>
+                    </div>
+                    <button onclick="demonstrateSeparation()">Demonstrate Separation</button>
+                    <p id="sponsorship-idea"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('load', () => {
+            gsap.utils.toArray(".rule").forEach((rule, index) => {
+                gsap.to(rule, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.5,
+                    delay: index * 0.2
+                });
+            });
+        });
+
+        let timerInterval;
+        let time = 1080; 
+        let timerRunning = false;
+
+        function startTimer() {
+            if (!timerRunning) {
+                timerRunning = true;
+                timerInterval = setInterval(updateTimer, 1000);
+            }
+        }
+
+        function pauseTimer() {
+            clearInterval(timerInterval);
+            timerRunning = false;
+        }
+
+        function updateTimer() {
+            const timerElement = document.getElementById('timer');
+            const minutes = Math.floor(time / 60);
+            let seconds = time % 60;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            timerElement.textContent = `${minutes}:${seconds}`;
+            if (time === 0) {
+                clearInterval(timerInterval);
+                timerElement.style.color = 'green';
+            } else {
+                time--;
+            }
+        }
+
+        function checkPlagiarism() {
+            const text = document.getElementById('plagiarism-checker').value;
+            const result = document.getElementById('plagiarism-result');
+            if (text.length > 50) {
+                result.textContent = "Content appears to be original!";
+                result.style.color = 'green';
+            } else {
+                result.textContent = "Please enter more content for an accurate check.";
+                result.style.color = 'orange';
+            }
+        }
+
+        let quality = 0;
+        function improveQuality() {
+            quality += 20;
+            if (quality > 100) quality = 100;
+            document.getElementById('production-bar').style.width = quality + '%';
+            if (quality === 100) {
+                document.getElementById('production-message').style.display = 'block';
+                document.getElementById('production-message').textContent = "Production Quality Improved Successfully!";
+            }
+        }
+
+        const diversityIdeas = [
+            "Multilingual TEDx events",
+            "Cross-cultural collaboration workshops",
+            "Inclusive technology showcases",
+            "Diverse speaker mentorship programs",
+            "Accessibility-focused presentations"
+        ];
+
+        function spinWheel() {
+            const wheel = document.getElementById('diversity-wheel');
+            const randomRotation = Math.floor(Math.random() * 360) + 720; 
+            wheel.style.transform = `rotate(${randomRotation}deg)`;
+            
+        }
+
+        function factCheck() {
+            const factCheck = document.getElementById('fact-check');
+            factCheck.textContent = "Facts verified! Content is accurate.";
+            factCheck.style.color = 'green';
+        }
+
+        function showLocalIdea(city) {
+            const ideas = {
+                'New York': "Innovative urban farming techniques",
+                'Tokyo': "AI-powered elderly care solutions",
+                'Nairobi': "Sustainable water purification methods"
+            };
+            document.getElementById('local-idea').textContent = `Local idea for ${city}: ${ideas[city]}`;
+        }
+
+        const sponsorshipIdeas = [
+            "Transparent funding allocation reports",
+            "Public content review process",
+            "Speaker selection by community vote",
+            "Open-source event planning tools",
+            "Collaborative sponsor-organizer workshops"
+        ];
+
+        function demonstrateSeparation() {
+            const shield = document.getElementById('content-shield');
+            shield.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                shield.style.transform = 'scale(1)';
+                const randomIdea = sponsorshipIdeas[Math.floor(Math.random() * sponsorshipIdeas.length)];
+            }, 500);
+        }
+    </script>
+</body>
+</html>
